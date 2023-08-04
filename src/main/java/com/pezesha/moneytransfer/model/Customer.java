@@ -18,12 +18,10 @@ import java.util.List;
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
+    private long customerNo;
     @NotBlank
     private String customerName;
-    private String nationalIdNo;
-    private String customerNo;
+    private long nationalIdNo;
     private String msisdn;
     private String  email;
     @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
