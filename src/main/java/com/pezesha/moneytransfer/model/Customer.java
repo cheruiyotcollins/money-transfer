@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @Entity
 @Table(name="customers")
@@ -26,6 +27,6 @@ public class Customer {
     private String msisdn;
     private String  email;
     @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private Account account;
+    private List<Account> account;
 
 }
