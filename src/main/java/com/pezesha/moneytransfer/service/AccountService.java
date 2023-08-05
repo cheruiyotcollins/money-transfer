@@ -36,7 +36,7 @@ public class AccountService {
 
              }
              //create a new account by calling accountSetup method
-             responseDto=  accountSetup(createAccountRequest);
+              responseDto=  accountSetup(createAccountRequest);
          }catch (Exception e){
              responseDto.setStatus(HttpStatus.BAD_REQUEST);
              responseDto.setDescription(e.getMessage());
@@ -51,6 +51,11 @@ public class AccountService {
         if(accountTypeRepository.findById(createAccountRequest.getAccountType()).isEmpty()){
             responseDto.setStatus(HttpStatus.NOT_FOUND);
             responseDto.setDescription("Provided Account Type Not Found");
+            return responseDto;
+        }
+        if(createAccountRequest.getStartingBalance()<0){
+            responseDto.setStatus(HttpStatus.NOT_ACCEPTABLE);
+            responseDto.setDescription("Starting Balance Cannot Be Less than 0");
             return responseDto;
         }
         Account account=new Account();
@@ -95,7 +100,7 @@ public class AccountService {
         try{
             //check if there is no existing similar account type then creates a new one
             if(accountTypeRepository.findByAccountTypeName(accountType.getAccountTypeName()).isEmpty()){
-                accountTypeRepository.save(accountType);
+               responseDto.setPayload(accountTypeRepository.save(accountType));
                 responseDto.setStatus(HttpStatus.CREATED);
                 responseDto.setDescription("Account Type Created Successfully");
                 return new ResponseEntity<>(responseDto,responseDto.getStatus());

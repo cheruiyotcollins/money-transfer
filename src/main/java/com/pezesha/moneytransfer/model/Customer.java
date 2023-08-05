@@ -39,6 +39,7 @@ public class Customer {
     @Email
     private String  email;
     @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+
     private List<Account> account;
 
 }
