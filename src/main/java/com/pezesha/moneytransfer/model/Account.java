@@ -3,32 +3,44 @@ package com.pezesha.moneytransfer.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 @Entity
-@Table(name="accounts")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "accounts")
 public class Account {
     @Id
+    @Min(value=10000000)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long accountNo;
+    @NotBlank
+    @Size(max = 40)
     private String accountName;
-    private String accountType;
+
+    @NotBlank
+    @Min(value=0)
     private double accountBalance;
+    @NotBlank
+    @Size(max = 15)
     private String accountStatus;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "customer_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
     private Customer customer;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "account_type_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private AccountType accountType;
 
 }

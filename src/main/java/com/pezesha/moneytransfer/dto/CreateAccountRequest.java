@@ -17,7 +17,7 @@ import lombok.Setter;
 public class CreateAccountRequest {
     private String customerName;
     private long nationalId;
-    private String accountType;
+    private long accountType;
     private String MSISDN;
     private String email;
     private double startingBalance;

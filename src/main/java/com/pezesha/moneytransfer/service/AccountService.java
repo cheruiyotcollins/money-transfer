@@ -3,8 +3,10 @@ package com.pezesha.moneytransfer.service;
 import com.pezesha.moneytransfer.dto.CreateAccountRequest;
 import com.pezesha.moneytransfer.dto.ResponseDto;
 import com.pezesha.moneytransfer.model.Account;
+import com.pezesha.moneytransfer.model.AccountType;
 import com.pezesha.moneytransfer.model.Customer;
 import com.pezesha.moneytransfer.repository.AccountRepository;
+import com.pezesha.moneytransfer.repository.AccountTypeRepository;
 import com.pezesha.moneytransfer.repository.CustomerRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,8 @@ public class AccountService {
     AccountRepository accountRepository;
     @Autowired
     CustomerRepository customerRepository;
+    @Autowired
+    AccountTypeRepository accountTypeRepository;
     ResponseDto responseDto;
 
     public ResponseEntity<?> createAccount(CreateAccountRequest createAccountRequest){
@@ -44,10 +48,15 @@ public class AccountService {
     //setting up account from createAccountRequest
     private ResponseDto accountSetup(CreateAccountRequest createAccountRequest){
         responseDto=new ResponseDto();
+        if(accountTypeRepository.findById(createAccountRequest.getAccountType()).isEmpty()){
+            responseDto.setStatus(HttpStatus.NOT_FOUND);
+            responseDto.setDescription("Provided Account Type Not Found");
+            return responseDto;
+        }
         Account account=new Account();
         account.setAccountBalance(createAccountRequest.getStartingBalance());
         account.setAccountName(createAccountRequest.getCustomerName());
-        account.setAccountType(createAccountRequest.getAccountType());
+        account.setAccountType(accountTypeRepository.findById(createAccountRequest.getAccountType()).get());
         account.setAccountStatus("ACTIVE");
         account.setCustomer(customerRepository.findByNationalIdNo(createAccountRequest.getNationalId()).get());
         accountRepository.save(account);
@@ -78,6 +87,30 @@ public class AccountService {
             responseDto.setDescription("Account with provided id was not found");
         }
         return  new ResponseEntity<>(responseDto, responseDto.getStatus());
+
+    }
+    public ResponseEntity<?> createAccountType(AccountType accountType){
+        responseDto=new ResponseDto();
+
+        try{
+            //check if there is no existing similar account type then creates a new one
+            if(accountTypeRepository.findByAccountTypeName(accountType.getAccountTypeName()).isEmpty()){
+                accountTypeRepository.save(accountType);
+                responseDto.setStatus(HttpStatus.CREATED);
+                responseDto.setDescription("Account Type Created Successfully");
+                return new ResponseEntity<>(responseDto,responseDto.getStatus());
+            }
+            //if account Type already exists
+            responseDto.setStatus(HttpStatus.NOT_ACCEPTABLE);
+            responseDto.setDescription("A similar account type name exists!!");
+            return new ResponseEntity<>(responseDto,responseDto.getStatus());
+
+        }catch (Exception e){
+            responseDto.setStatus(HttpStatus.BAD_REQUEST);
+            responseDto.setDescription(e.toString());
+            return new ResponseEntity<>(responseDto,responseDto.getStatus());
+        }
+
 
     }
 }

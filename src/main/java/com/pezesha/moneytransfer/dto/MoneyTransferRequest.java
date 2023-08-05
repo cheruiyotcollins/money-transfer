@@ -11,8 +11,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MoneyTransferRequest {
-    private String customerName;
-    private long nationalId;
-    private String accountType;
-    private String MSISDN;
+    private long debitAccount;
+    private long creditAccount;
+    private long transactionAmount;
+    private String transactionRef;
+    private String transactionDetails;
+    private String transactionDate;
 }
