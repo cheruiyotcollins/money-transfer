@@ -5,9 +5,11 @@ import com.pezesha.moneytransfer.dto.ResponseDto;
 import com.pezesha.moneytransfer.model.Account;
 import com.pezesha.moneytransfer.model.AccountType;
 import com.pezesha.moneytransfer.model.Customer;
+import com.pezesha.moneytransfer.model.Transaction;
 import com.pezesha.moneytransfer.repository.AccountRepository;
 import com.pezesha.moneytransfer.repository.AccountTypeRepository;
 import com.pezesha.moneytransfer.repository.CustomerRepository;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Service
@@ -27,7 +30,7 @@ public class AccountService {
     @Autowired
     AccountTypeRepository accountTypeRepository;
     ResponseDto responseDto;
-
+     @Transactional
     public ResponseEntity<?> createAccount(CreateAccountRequest createAccountRequest){
         responseDto=new ResponseDto();
          try{
@@ -97,6 +100,14 @@ public class AccountService {
         }
         return  new ResponseEntity<>(responseDto, responseDto.getStatus());
 
+    }
+    public ResponseEntity<?> findAll(){
+        List<Account> accounts=accountRepository.findAll();
+        responseDto=new ResponseDto();
+        responseDto.setPayload(accounts);
+        responseDto.setStatus(HttpStatus.FOUND);
+        responseDto.setDescription("List Of All Accounts");
+        return new ResponseEntity<>(responseDto,responseDto.getStatus());
     }
     public ResponseEntity<?> createAccountType(AccountType accountType){
         responseDto=new ResponseDto();

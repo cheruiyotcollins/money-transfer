@@ -1,6 +1,7 @@
 package com.pezesha.moneytransfer.controller;
 
 import com.pezesha.moneytransfer.dto.CreateAccountRequest;
+import com.pezesha.moneytransfer.model.AccountType;
 import com.pezesha.moneytransfer.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,5 +19,14 @@ public class AccountController {
     @GetMapping("find/{id}")
     public ResponseEntity<?> getAccountInfo(@PathVariable long id){
         return accountService.findById(id);
+    }
+    @GetMapping("list")
+    public ResponseEntity<?> findAll(){
+        return accountService.findAll();
+
+    }
+    @PostMapping("types/new")
+    public ResponseEntity<?> createAccountType(@RequestBody AccountType accountType){
+        return accountService.createAccountType(accountType);
     }
 }
