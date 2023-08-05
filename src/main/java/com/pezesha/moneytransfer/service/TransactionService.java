@@ -66,10 +66,9 @@ public class TransactionService {
 
             double debitAccountBalance=debitAccount.getAccountBalance()-transactionAmount;
             double creditAccountBalance=creditAccount.getAccountBalance()+transactionAmount;
-            log.info("it reached here................."+debitAccountBalance);
             debitAccount.setAccountBalance(debitAccountBalance);
             creditAccount.setAccountBalance(creditAccountBalance);
-            log.info("it reached here................."+debitAccount.getAccountBalance());
+
             accountRepository.save(debitAccount);
             accountRepository.save(creditAccount);
 
