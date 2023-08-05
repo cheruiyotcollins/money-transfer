@@ -14,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 
 @Service
 @Slf4j
@@ -64,6 +66,7 @@ public class AccountService {
         account.setAccountType(accountTypeRepository.findById(createAccountRequest.getAccountType()).get());
         account.setAccountStatus("ACTIVE");
         account.setCustomer(customerRepository.findByNationalIdNo(createAccountRequest.getNationalId()).get());
+        account.setCreatedOn(LocalDateTime.now());
         accountRepository.save(account);
         responseDto.setPayload(account);
         responseDto.setStatus(HttpStatus.CREATED);
@@ -77,6 +80,7 @@ public class AccountService {
         customer.setMsisdn(createAccountRequest.getMSISDN());
         customer.setEmail(createAccountRequest.getEmail());
         customer.setNationalIdNo(createAccountRequest.getNationalId());
+        customer.setCreatedOn(LocalDateTime.now());
         customerRepository.save(customer);
     }
     public ResponseEntity<?> findById(long id){

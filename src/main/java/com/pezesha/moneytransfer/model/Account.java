@@ -10,6 +10,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -32,6 +33,8 @@ public class Account {
     @NotBlank
     @Size(max = 15)
     private String accountStatus;
+    @NotBlank
+    private LocalDateTime createdOn;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "customer_id", nullable = false)
