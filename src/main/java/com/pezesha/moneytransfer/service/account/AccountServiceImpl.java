@@ -13,10 +13,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 
 @Service
@@ -30,7 +32,8 @@ public class AccountServiceImpl implements AccountService{
     AccountTypeRepository accountTypeRepository;
     ResponseDto responseDto;
      @Transactional
-    public ResponseEntity<?> createAccount(CreateAccountRequest createAccountRequest){
+     @Async
+    public CompletableFuture<ResponseDto> createAccount(CreateAccountRequest createAccountRequest){
         responseDto=new ResponseDto();
          try{
              // Add new Customer if not found in customer table
@@ -46,7 +49,7 @@ public class AccountServiceImpl implements AccountService{
              responseDto.setDescription(e.getMessage());
 
          }
-        return new ResponseEntity<>(responseDto, responseDto.getStatus());
+        return CompletableFuture.completedFuture(responseDto);
 
     }
     //setting up account from createAccountRequest
@@ -85,7 +88,8 @@ public class AccountServiceImpl implements AccountService{
         customer.setCreatedOn(LocalDateTime.now());
         customerRepository.save(customer);
     }
-    public ResponseEntity<?> findById(long id){
+    @Async
+    public CompletableFuture<ResponseDto> findById(long id){
         responseDto=new ResponseDto();
         if(accountRepository.findById(id).isPresent()){
           Account account=  accountRepository.findById(id).get();
@@ -97,18 +101,20 @@ public class AccountServiceImpl implements AccountService{
             responseDto.setStatus(HttpStatus.NOT_FOUND);
             responseDto.setDescription("Account with provided id was not found");
         }
-        return  new ResponseEntity<>(responseDto, responseDto.getStatus());
+        return  CompletableFuture.completedFuture(responseDto);
 
     }
-    public ResponseEntity<?> findAll(){
+    @Async
+    public CompletableFuture<ResponseDto> findAll(){
         List<Account> accounts=accountRepository.findAll();
         responseDto=new ResponseDto();
         responseDto.setPayload(accounts);
         responseDto.setStatus(HttpStatus.FOUND);
         responseDto.setDescription("List Of All Accounts");
-        return new ResponseEntity<>(responseDto,responseDto.getStatus());
+        return CompletableFuture.completedFuture(responseDto);
     }
-    public ResponseEntity<?> createAccountType(AccountType accountType){
+    @Async
+    public CompletableFuture<ResponseDto> createAccountType(AccountType accountType){
         responseDto=new ResponseDto();
 
         try{
@@ -117,19 +123,20 @@ public class AccountServiceImpl implements AccountService{
                responseDto.setPayload(accountTypeRepository.save(accountType));
                 responseDto.setStatus(HttpStatus.CREATED);
                 responseDto.setDescription("Account Type Created Successfully");
-                return new ResponseEntity<>(responseDto,responseDto.getStatus());
+                return CompletableFuture.completedFuture(responseDto);
             }
             //if account Type already exists
             responseDto.setStatus(HttpStatus.NOT_ACCEPTABLE);
             responseDto.setDescription("A similar account type name exists!!");
-            return new ResponseEntity<>(responseDto,responseDto.getStatus());
+            return CompletableFuture.completedFuture(responseDto);
 
         }catch (Exception e){
             responseDto.setStatus(HttpStatus.BAD_REQUEST);
             responseDto.setDescription(e.toString());
-            return new ResponseEntity<>(responseDto,responseDto.getStatus());
+            return CompletableFuture.completedFuture(responseDto);
         }
 
 
     }
+
 }

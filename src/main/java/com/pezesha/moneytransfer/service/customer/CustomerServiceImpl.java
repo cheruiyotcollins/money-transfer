@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class CustomerServiceImpl implements CustomerService{
@@ -16,7 +17,7 @@ public class CustomerServiceImpl implements CustomerService{
     CustomerRepository customerRepository;
     ResponseDto responseDto;
 
-    public ResponseEntity<?> findById(long id){
+    public CompletableFuture<ResponseDto> findById(long id){
         responseDto=new ResponseDto();
         if(customerRepository.findById(id).isPresent()){
             Customer customer=  customerRepository.findById(id).get();
@@ -28,15 +29,15 @@ public class CustomerServiceImpl implements CustomerService{
             responseDto.setStatus(HttpStatus.NOT_FOUND);
             responseDto.setDescription("Customer with provided id not found");
         }
-        return  new ResponseEntity<>(responseDto, responseDto.getStatus());
+        return  CompletableFuture.completedFuture(responseDto);
 
     }
-    public ResponseEntity<?> findAll(){
+    public CompletableFuture<ResponseDto> findAll(){
         List<Customer> customers=customerRepository.findAll();
         responseDto=new ResponseDto();
         responseDto.setPayload(customers);
         responseDto.setStatus(HttpStatus.FOUND);
         responseDto.setDescription("List Of All Customers");
-        return new ResponseEntity<>(responseDto,responseDto.getStatus());
+        return  CompletableFuture.completedFuture(responseDto);
     }
 }
