@@ -11,7 +11,7 @@ when Mysql server is up, create database schema called `money_transfer_schema` a
 The app has two authentication users for easier testing
 1. Normal user (username/password=```user/user```)
 2. Admin user(username/password=```admin/admin```) 
-3. After  setting up the project as per the  guidelines below and your application has started, create user admin and member, check swagger documentation for user signup api  (member and admin Roles wil be automatically inserted when application starts).
+3. After  setting up the project as per the  guidelines below and your application has started, create user admin and user, check swagger documentation for user signup api  (user and admin Roles wil be automatically inserted when application starts).
  After signing in using the created user, you will be granted a bearer token which should be used for authentication, add to header of every request.
 
 To get started with this project, you will need to have the following installed on your local machine:
@@ -33,4 +33,6 @@ Make sure the application is up and access it via link the endpoint `URI/swagger
 
 ## Encryption
 This is done using library ```jasypt```. Read more about how to do this here https://medium.com/@javatechie/spring-boot-password-encryption-using-jasypt-e92eed7343ab
-You also need to add encyption key in your maven environment by running `mvn -Djasypt.encryptor.password=your encryption key`. For now, I have added it to the ```properties.properties```
+You also need to add encryption key in your maven environment by running ` mvn jasypt:encrypt-value "-Djasypt.encryptor.password=your_secret_key" "-Djasypt.plugin.value=your_password"`. For now, I have added it to the ```properties.properties```
+N.B please note that you will need to to run  `mvn clean "-Djasypt.encryptor.password=your_secrect_key" spring-boot:run` if you have encrypted your password
+
