@@ -1,4 +1,4 @@
-package com.pezesha.moneytransfer.service;
+package com.pezesha.moneytransfer.service.transaction;
 
 import com.pezesha.moneytransfer.dto.MoneyTransferRequest;
 import com.pezesha.moneytransfer.dto.ResponseDto;
@@ -18,7 +18,7 @@ import java.util.List;
 @Service
 @Transactional
 @Slf4j
-public class TransactionService {
+public class TransactionServiceImpl implements TransactionService{
     @Autowired
     TransactionRepository transactionRepository;
     @Autowired

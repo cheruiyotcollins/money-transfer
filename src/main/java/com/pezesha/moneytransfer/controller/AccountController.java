@@ -2,7 +2,8 @@ package com.pezesha.moneytransfer.controller;
 
 import com.pezesha.moneytransfer.dto.CreateAccountRequest;
 import com.pezesha.moneytransfer.model.AccountType;
-import com.pezesha.moneytransfer.service.AccountService;
+import com.pezesha.moneytransfer.service.account.AccountService;
+import com.pezesha.moneytransfer.service.account.AccountServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

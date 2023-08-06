@@ -1,6 +1,6 @@
 package com.pezesha.moneytransfer.controller;
 
-import com.pezesha.moneytransfer.service.CustomerService;
+import com.pezesha.moneytransfer.service.customer.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

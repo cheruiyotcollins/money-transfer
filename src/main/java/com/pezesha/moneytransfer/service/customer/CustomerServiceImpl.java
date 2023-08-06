@@ -1,7 +1,6 @@
-package com.pezesha.moneytransfer.service;
+package com.pezesha.moneytransfer.service.customer;
 
 import com.pezesha.moneytransfer.dto.ResponseDto;
-import com.pezesha.moneytransfer.model.Account;
 import com.pezesha.moneytransfer.model.Customer;
 import com.pezesha.moneytransfer.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class CustomerService {
+public class CustomerServiceImpl implements CustomerService{
     @Autowired
     CustomerRepository customerRepository;
     ResponseDto responseDto;

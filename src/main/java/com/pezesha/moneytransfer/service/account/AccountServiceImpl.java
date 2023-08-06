@@ -1,11 +1,10 @@
-package com.pezesha.moneytransfer.service;
+package com.pezesha.moneytransfer.service.account;
 
 import com.pezesha.moneytransfer.dto.CreateAccountRequest;
 import com.pezesha.moneytransfer.dto.ResponseDto;
 import com.pezesha.moneytransfer.model.Account;
 import com.pezesha.moneytransfer.model.AccountType;
 import com.pezesha.moneytransfer.model.Customer;
-import com.pezesha.moneytransfer.model.Transaction;
 import com.pezesha.moneytransfer.repository.AccountRepository;
 import com.pezesha.moneytransfer.repository.AccountTypeRepository;
 import com.pezesha.moneytransfer.repository.CustomerRepository;
@@ -22,7 +21,7 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class AccountService {
+public class AccountServiceImpl implements AccountService{
     @Autowired
     AccountRepository accountRepository;
     @Autowired

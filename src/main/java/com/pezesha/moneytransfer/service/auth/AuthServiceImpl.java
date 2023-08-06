@@ -1,4 +1,4 @@
-package com.pezesha.moneytransfer.service;
+package com.pezesha.moneytransfer.service.auth;
 
 
 
@@ -8,6 +8,7 @@ import com.pezesha.moneytransfer.model.User;
 import com.pezesha.moneytransfer.repository.RoleRepository;
 import com.pezesha.moneytransfer.repository.UserRepository;
 import com.pezesha.moneytransfer.security.JwtTokenProvider;
+import com.pezesha.moneytransfer.service.auth.AuthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;

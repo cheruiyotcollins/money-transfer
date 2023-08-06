@@ -1,4 +1,4 @@
-package com.pezesha.moneytransfer.service;
+package com.pezesha.moneytransfer.service.auth;
 
 
 

@@ -9,7 +9,7 @@ import com.pezesha.moneytransfer.dto.LoginDto;
 import com.pezesha.moneytransfer.dto.SignUpRequest;
 import com.pezesha.moneytransfer.model.Role;
 import com.pezesha.moneytransfer.model.User;
-import com.pezesha.moneytransfer.service.AuthService;
+import com.pezesha.moneytransfer.service.auth.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

@@ -1,8 +1,7 @@
 package com.pezesha.moneytransfer.controller;
 
 import com.pezesha.moneytransfer.dto.MoneyTransferRequest;
-import com.pezesha.moneytransfer.repository.TransactionRepository;
-import com.pezesha.moneytransfer.service.TransactionService;
+import com.pezesha.moneytransfer.service.transaction.TransactionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value="/api/transactions/")
 public class TransactionController {
     @Autowired
-    TransactionService transactionService;
+    TransactionServiceImpl transactionService;
     @PostMapping("new")
     public ResponseEntity<?> processTransaction(@RequestBody MoneyTransferRequest moneyTransferRequest){
       return  transactionService.moneyTransfer(moneyTransferRequest);
