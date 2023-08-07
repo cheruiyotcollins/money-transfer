@@ -73,6 +73,7 @@ public class SecurityConfig {
                                 .requestMatchers("/log/**").permitAll()
                                 .requestMatchers("/actuator/**").permitAll()
                                 .requestMatchers("/browser/**").permitAll()
+                                .requestMatchers("/**").permitAll()
                                 //Auth access
                                 .requestMatchers("/user/auth/signup").permitAll()
                                 .requestMatchers("/user/auth/signin").permitAll()

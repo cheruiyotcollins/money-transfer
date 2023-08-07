@@ -65,7 +65,7 @@ Destination Folder: ```logging.file.path=logs/```
 File Name: ```logging.file.name=logs/money_transfer.log ```
 
 ## Application Monitoring
-In this application Spring Actuator and Hypertext Application Language (HAL) is used to monitor the state and health of the application.
+In this application Spring Actuator and Grafana, Prometheus and Hypertext Application Language (HAL) is used to monitor the state and health of the application.
 
 
 To monitor the application all the endpoints are found on this api: `http://localhost:2023/actuator`
