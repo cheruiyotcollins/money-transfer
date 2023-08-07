@@ -29,7 +29,7 @@ public class Transaction {
     @NotBlank
     private long creditAccount;
     @NotBlank
-    @Min(value=1)
+    @Min(value = 1)
     private double transactionAmount;
     @NotBlank
     private String transactionRef;

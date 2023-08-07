@@ -9,13 +9,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateAccountRequest {
+public class CreateCustomerRequest {
     private String customerName;
     private long nationalId;
-    private long accountType;
     private String MSISDN;
     private String email;
-    private double startingBalance;
-
-
 }

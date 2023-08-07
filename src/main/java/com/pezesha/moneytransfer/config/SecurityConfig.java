@@ -36,14 +36,14 @@ public class SecurityConfig {
 
     public SecurityConfig(UserDetailsService userDetailsService,
                           JwtAuthenticationEntryPoint authenticationEntryPoint,
-                          JwtAuthenticationFilter authenticationFilter){
+                          JwtAuthenticationFilter authenticationFilter) {
         this.userDetailsService = userDetailsService;
         this.authenticationEntryPoint = authenticationEntryPoint;
         this.authenticationFilter = authenticationFilter;
     }
 
     @Bean
-    public static PasswordEncoder passwordEncoder(){
+    public static PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
@@ -60,43 +60,45 @@ public class SecurityConfig {
                 .csrf()
                 .disable()
                 .authorizeHttpRequests((authorize) ->
-                                       //Swagger access
-                               authorize.requestMatchers("/swagger-ui/**").permitAll()
+                        //Swagger access
+                        authorize.requestMatchers("/swagger-ui/**").permitAll()
                                 .requestMatchers("/v3/**").permitAll()
-                                       //Auth access
+                                //Auth access
                                 .requestMatchers("/user/auth/signup").permitAll()
                                 .requestMatchers("/user/auth/signin").permitAll()
                                 .requestMatchers("/user/auth/update").hasAuthority("ADMIN")
-                                 .requestMatchers("/user/auth/add").hasAuthority("ADMIN")
+                                .requestMatchers("/user/auth/add").hasAuthority("ADMIN")
                                 .requestMatchers("/user/auth/findById/**").hasAuthority("ADMIN")
                                 .requestMatchers("/user/auth/list/all").hasAuthority("ADMIN")
                                 .requestMatchers("/user/auth/deleteById/**").hasAuthority("ADMIN")
                                 .requestMatchers("/user/auth/new/role").hasAuthority("ADMIN")
-                                .requestMatchers("/user/auth/current").hasAnyAuthority("ADMIN","USER")
-                                      //Account access
+                                .requestMatchers("/user/auth/current").hasAnyAuthority("ADMIN", "USER")
+                                //Account access
                                 .requestMatchers("/api/accounts/new").hasAuthority("ADMIN")
                                 .requestMatchers("/api/accounts/list").hasAuthority("ADMIN")
-                                 .requestMatchers("/api/accounts/type/new").hasAuthority("ADMIN")
-                                .requestMatchers("/api/accounts/find/**").hasAnyAuthority("ADMIN","USER")
-                                       //Customer access
+                                .requestMatchers("/api/accounts/type/new").hasAuthority("ADMIN")
+                                .requestMatchers("/api/accounts/type/list").hasAnyAuthority("ADMIN", "USER")
+                                .requestMatchers("/api/accounts/find/**").hasAnyAuthority("ADMIN", "USER")
+                                //Customer access
                                 .requestMatchers("/api/customers/list").hasAuthority("ADMIN")
-                                 .requestMatchers("/api/customers/find/**").hasAnyAuthority("ADMIN","USER")
-                                       //Transaction access
-                                .requestMatchers("/api/transactions/new").hasAnyAuthority("ADMIN","USER")
+                                .requestMatchers("/api/customers/find/**").hasAnyAuthority("ADMIN", "USER")
+                                .requestMatchers("/api/customers/new").hasAuthority("ADMIN")
+                                //Transaction access
+                                .requestMatchers("/api/transactions/new").hasAnyAuthority("ADMIN", "USER")
                                 .requestMatchers("/api/transactions/list").hasAuthority("ADMIN")
-                                .requestMatchers("/api/transactions/find/**").hasAnyAuthority("ADMIN","USER")
+                                .requestMatchers("/api/transactions/find/**").hasAnyAuthority("ADMIN", "USER")
                                 .anyRequest().authenticated()
 
-                ).exceptionHandling( exception -> exception
+                ).exceptionHandling(exception -> exception
                         .authenticationEntryPoint(authenticationEntryPoint)
-                ).sessionManagement( session -> session
+                ).sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 );
 
         http.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
-}
+    }
 
 
 }

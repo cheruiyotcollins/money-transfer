@@ -1,8 +1,7 @@
 package com.pezesha.moneytransfer.security;
 
 
-
-import com.pezesha.moneytransfer.exception.LendingAPIException;
+import com.pezesha.moneytransfer.exception.MoneyTransferAPIException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -24,7 +23,7 @@ public class JwtTokenProvider {
     private long jwtExpirationDate;
 
     // generate JWT token
-    public String generateToken(Authentication authentication){
+    public String generateToken(Authentication authentication) {
         String username = authentication.getName();
 
         Date currentDate = new Date();
@@ -40,14 +39,14 @@ public class JwtTokenProvider {
         return token;
     }
 
-    private Key key(){
+    private Key key() {
         return Keys.hmacShaKeyFor(
                 Decoders.BASE64.decode(jwtSecret)
         );
     }
 
     // get username from Jwt token
-    public String getUsername(String token){
+    public String getUsername(String token) {
         Claims claims = Jwts.parser()
                 .setSigningKey(key())
                 .parseClaimsJws(token)
@@ -57,18 +56,18 @@ public class JwtTokenProvider {
     }
 
     // validate Jwt token
-    public boolean validateToken(String token){
-        try{
+    public boolean validateToken(String token) {
+        try {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
             return true;
         } catch (MalformedJwtException ex) {
-            throw new LendingAPIException(HttpStatus.BAD_REQUEST, "Invalid JWT token");
+            throw new MoneyTransferAPIException(HttpStatus.BAD_REQUEST, "Invalid JWT token");
         } catch (ExpiredJwtException ex) {
-            throw new LendingAPIException(HttpStatus.BAD_REQUEST, "Expired JWT token");
+            throw new MoneyTransferAPIException(HttpStatus.BAD_REQUEST, "Expired JWT token");
         } catch (UnsupportedJwtException ex) {
-            throw new LendingAPIException(HttpStatus.BAD_REQUEST, "Unsupported JWT token");
+            throw new MoneyTransferAPIException(HttpStatus.BAD_REQUEST, "Unsupported JWT token");
         } catch (IllegalArgumentException ex) {
-            throw new LendingAPIException(HttpStatus.BAD_REQUEST, "JWT claims string is empty.");
+            throw new MoneyTransferAPIException(HttpStatus.BAD_REQUEST, "JWT claims string is empty.");
         }
     }
 }

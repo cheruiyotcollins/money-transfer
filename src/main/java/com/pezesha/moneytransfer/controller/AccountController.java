@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,7 @@ import java.util.concurrent.ExecutionException;
 
 @RestController
 @RequestMapping(value = "/api/accounts/")
+@Slf4j
 public class AccountController {
     @Autowired
     AccountService accountService;
@@ -73,7 +75,7 @@ public class AccountController {
             @ApiResponse(responseCode = "201", description = "Account Type Created Successfully",
                     content = {@Content(mediaType = "application/json", schema = @Schema(implementation = Account.class))}),
             @ApiResponse(responseCode = "401", description = "Unauthorized user", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Account not found", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Account Type not found", content = @Content),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content)})
     @PostMapping("types/new")
     public ResponseEntity<?> createAccountType(@Valid @RequestBody AccountType accountType) throws ExecutionException, InterruptedException {
@@ -81,5 +83,20 @@ public class AccountController {
         responseDto = (ResponseDto) completableFuture.get();
 
         return new ResponseEntity<>(responseDto, responseDto.getStatus());
+    }
+
+    @Operation(summary = "Listing All Account Types")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "302", description = "List of All Accounts Types",
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = Account.class))}),
+            @ApiResponse(responseCode = "401", description = "Unauthorized user", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Account Types not found", content = @Content),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content)})
+    @GetMapping("types/list")
+    public ResponseEntity<?> findAllAccountTypes() throws ExecutionException, InterruptedException {
+        CompletableFuture completableFuture = accountService.findAllAccountTypes();
+        responseDto = (ResponseDto) completableFuture.get();
+        return new ResponseEntity<>(responseDto, responseDto.getStatus());
+
     }
 }

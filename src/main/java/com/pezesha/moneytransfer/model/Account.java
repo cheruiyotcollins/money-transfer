@@ -3,7 +3,10 @@ package com.pezesha.moneytransfer.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -20,15 +23,16 @@ import java.time.LocalDateTime;
 @Table(name = "accounts")
 public class Account {
     @Id
-    @Min(value=10000000)
+    @Min(value = 10000000)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long accountNo;
     @NotBlank
     @Size(max = 40)
     private String accountName;
 
+    //added @Version to provide Optimistic locking to avoid  concurrent requests and avoid race conditions
     @NotBlank
-    @Min(value=0)
+    @Min(value = 0)
     private double accountBalance;
     @NotBlank
     @Size(max = 15)

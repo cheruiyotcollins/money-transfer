@@ -1,10 +1,14 @@
 package com.pezesha.moneytransfer.service.transaction;
 
 import com.pezesha.moneytransfer.dto.MoneyTransferRequest;
-import org.springframework.http.ResponseEntity;
+import com.pezesha.moneytransfer.dto.ResponseDto;
+
+import java.util.concurrent.CompletableFuture;
 
 public interface TransactionService {
-    public ResponseEntity<?> moneyTransfer(MoneyTransferRequest moneyTransferRequest);
-    public ResponseEntity<?> findAll();
-    public ResponseEntity<?> findById(long id);
+    public CompletableFuture<ResponseDto> moneyTransfer(MoneyTransferRequest moneyTransferRequest);
+
+    public CompletableFuture<ResponseDto> findAll();
+
+    public CompletableFuture<ResponseDto> findById(long id);
 }

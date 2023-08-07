@@ -1,14 +1,12 @@
 package com.pezesha.moneytransfer.service.auth;
 
 
-
 import com.pezesha.moneytransfer.dto.*;
 import com.pezesha.moneytransfer.model.Role;
 import com.pezesha.moneytransfer.model.User;
 import com.pezesha.moneytransfer.repository.RoleRepository;
 import com.pezesha.moneytransfer.repository.UserRepository;
 import com.pezesha.moneytransfer.security.JwtTokenProvider;
-import com.pezesha.moneytransfer.service.auth.AuthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,13 +21,12 @@ import java.util.Collections;
 @Service
 public class AuthServiceImpl implements AuthService {
 
+    ResponseDto responseDto;
     private AuthenticationManager authenticationManager;
     private UserRepository userRepository;
     private RoleRepository roleRepository;
     private PasswordEncoder passwordEncoder;
     private JwtTokenProvider jwtTokenProvider;
-
-    ResponseDto responseDto =new ResponseDto();
 
 
     public AuthServiceImpl(AuthenticationManager authenticationManager,
@@ -58,13 +55,16 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public ResponseEntity<?> register(SignUpRequest signUpRequest) {
-        if(userRepository.existsByEmail(signUpRequest.getEmail())) {
-            return new ResponseEntity("Email Address already in use!",
-                    HttpStatus.NOT_ACCEPTABLE);
+        responseDto = new ResponseDto();
+        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+            responseDto.setStatus(HttpStatus.NOT_ACCEPTABLE);
+            responseDto.setDescription("Email Address already in use!");
+            return new ResponseEntity(responseDto, responseDto.getStatus());
         }
-        if(userRepository.existsByUsername(signUpRequest.getUsername())) {
-            return new ResponseEntity( "Username is already taken!",
-                    HttpStatus.NOT_ACCEPTABLE);
+        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
+            responseDto.setStatus(HttpStatus.NOT_ACCEPTABLE);
+            responseDto.setDescription("Username is already taken!");
+            return new ResponseEntity(responseDto, responseDto.getStatus());
         }
 
         // Creating user's account
@@ -74,73 +74,79 @@ public class AuthServiceImpl implements AuthService {
         user.setUsername(signUpRequest.getUsername());
         user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
 
-           if(roleRepository.findByName("ADMIN").isPresent()){
-                Role userRole = roleRepository.findByName("ADMIN").get();
-                 user.setRoles(Collections.singleton(userRole));
-            }
-         userRepository.save(user);
+        if (roleRepository.findByName("ADMIN").isPresent()) {
+            Role userRole = roleRepository.findByName("ADMIN").get();
+            user.setRoles(Collections.singleton(userRole));
+        }
+        userRepository.save(user);
 
-        return new ResponseEntity("User registered successfully",HttpStatus.ACCEPTED);
+        return new ResponseEntity("User registered successfully", HttpStatus.ACCEPTED);
     }
 
     @Override
     public ResponseEntity<?> addRole(AddRoleRequest addRoleRequest) {
-        Role role=new Role();
+        Role role = new Role();
         role.setName(addRoleRequest.getName());
         roleRepository.save(role);
         return null;
     }
+
     @Override
-    public ResponseEntity<?> findUserById(long id){
+    public ResponseEntity<?> findUserById(long id) {
+        responseDto = new ResponseDto();
+        try {
 
-        try{
+            return new ResponseEntity<>(userRepository.findById(id).get(), HttpStatus.OK);
 
-            return new ResponseEntity<>( userRepository.findById(id).get(),HttpStatus.OK);
-
-        }catch(Exception e){
+        } catch (Exception e) {
             responseDto.setStatus(HttpStatus.BAD_REQUEST);
             responseDto.setDescription("User Not Found");
-            return new ResponseEntity<>(responseDto,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(responseDto, responseDto.getStatus());
         }
     }
+
     @Override
-    public ResponseEntity<?> findAll(){
+    public ResponseEntity<?> findAll() {
+        responseDto = new ResponseDto();
+        try {
 
-        try{
+            return new ResponseEntity<>(userRepository.findAll(), HttpStatus.OK);
 
-            return new ResponseEntity<>( userRepository.findAll(),HttpStatus.OK);
-
-        }catch(Exception e){
+        } catch (Exception e) {
             responseDto.setStatus(HttpStatus.BAD_REQUEST);
             responseDto.setDescription("No User Found");
-            return new ResponseEntity<>(responseDto,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
         }
     }
-    @Override
-    public ResponseEntity<?> deleteById(long id){
 
-        try{
+    @Override
+    public ResponseEntity<?> deleteById(long id) {
+        responseDto = new ResponseDto();
+        try {
             responseDto.setStatus(HttpStatus.ACCEPTED);
             responseDto.setDescription("User deleted successfully");
             userRepository.deleteById(id);
-            return new ResponseEntity<>(responseDto,HttpStatus.OK);
+            return new ResponseEntity<>(responseDto, HttpStatus.OK);
 
-        }catch(Exception e){
+        } catch (Exception e) {
             responseDto.setStatus(HttpStatus.BAD_REQUEST);
             responseDto.setDescription("User with that id not found");
-            return new ResponseEntity<>(responseDto,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
         }
     }
 
     @Override
     public ResponseEntity<?> addUser(SignUpRequest signUpRequest) {
-        if(userRepository.existsByEmail(signUpRequest.getEmail())) {
-            return new ResponseEntity("Email Address already in use!",
-                    HttpStatus.NOT_ACCEPTABLE);
+        responseDto = new ResponseDto();
+        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+            responseDto.setStatus(HttpStatus.NOT_ACCEPTABLE);
+            responseDto.setDescription("Email Address already in use!");
+            return new ResponseEntity<>(responseDto, responseDto.getStatus());
         }
-        if(userRepository.existsByUsername(signUpRequest.getUsername())) {
-            return new ResponseEntity( "Username is already taken!",
-                    HttpStatus.NOT_ACCEPTABLE);
+        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
+            responseDto.setStatus(HttpStatus.NOT_ACCEPTABLE);
+            responseDto.setDescription("Username is already taken!");
+            return new ResponseEntity<>(responseDto, responseDto.getStatus());
         }
 
         // Creating user's account
@@ -150,25 +156,26 @@ public class AuthServiceImpl implements AuthService {
         user.setUsername(signUpRequest.getUsername());
         user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
 
-        if(roleRepository.existsById(signUpRequest.getRoleId())){
+        if (roleRepository.existsById(signUpRequest.getRoleId())) {
             Role userRole = roleRepository.findById(signUpRequest.getRoleId()).get();
             user.setRoles(Collections.singleton(userRole));
         }
         userRepository.save(user);
-
-        return new ResponseEntity("User Added successfully",HttpStatus.ACCEPTED);
+        responseDto.setStatus(HttpStatus.CREATED);
+        responseDto.setDescription("User Added successfully");
+        return new ResponseEntity<>(responseDto, responseDto.getStatus());
     }
 
     @Override
     public ResponseEntity<?> getCurrentUser(String email) {
 
-        CurrentUserDto currentUserDto=new CurrentUserDto();
-       User user= userRepository.findByEmail(email).get();
-       currentUserDto.setName(user.getUsername());
-       currentUserDto.setEmail(user.getEmail());
-       currentUserDto.setRole(user.getRoles().iterator().next().getId());
-       System.out.println(currentUserDto.getRole());
-       return new ResponseEntity<>(currentUserDto,HttpStatus.OK);
+        CurrentUserDto currentUserDto = new CurrentUserDto();
+        User user = userRepository.findByEmail(email).get();
+        currentUserDto.setName(user.getUsername());
+        currentUserDto.setEmail(user.getEmail());
+        currentUserDto.setRole(user.getRoles().iterator().next().getId());
+        System.out.println(currentUserDto.getRole());
+        return new ResponseEntity<>(currentUserDto, HttpStatus.OK);
     }
 
 

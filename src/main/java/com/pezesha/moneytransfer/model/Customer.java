@@ -34,15 +34,15 @@ public class Customer {
     @NotBlank
     private String customerName;
     @NotBlank
+
     private long nationalIdNo;
     @NotBlank
     private String msisdn;
     @Email
-    private String  email;
+    private String email;
     @NotBlank
     private LocalDateTime createdOn;
-    @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Account> account;
 
 }

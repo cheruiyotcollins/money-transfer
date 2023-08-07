@@ -12,7 +12,7 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResponseDto {
-    @JsonInclude(JsonInclude.Include. NON_NULL)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Object payload;
     private HttpStatus status;
     private String Description;
