@@ -63,6 +63,9 @@ public class SecurityConfig {
                         //Swagger access
                         authorize.requestMatchers("/swagger-ui/**").permitAll()
                                 .requestMatchers("/v3/**").permitAll()
+                                .requestMatchers("/log/**").permitAll()
+                                .requestMatchers("/actuator/**").permitAll()
+                                .requestMatchers("/browser/**").permitAll()
                                 //Auth access
                                 .requestMatchers("/user/auth/signup").permitAll()
                                 .requestMatchers("/user/auth/signin").permitAll()

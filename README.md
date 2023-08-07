@@ -57,3 +57,15 @@ For now, I have added it to the ```properties.properties```
 N.B please note that you will need to to run  `mvn clean "-Djasypt.encryptor.password=your_secrect_key" spring-boot:run`
 if you have encrypted your password
 
+
+## Logging
+Spring boot only logs to the console by default. In order to log into a file, the following properties need to be added to the application.properties:
+
+Destination Folder: ```logging.file.path=logs/```
+File Name: ```logging.file.name=logs/money_transfer.log ```
+
+## Application Monitoring
+In this application Spring Actuator and Hypertext Application Language (HAL) is used to monitor the state and health of the application.
+
+
+To monitor the application all the endpoints are found on this api: `http://localhost:2023/actuator`
