@@ -4,8 +4,8 @@ import org.springframework.http.HttpStatus;
 
 public class MoneyTransferAPIException extends RuntimeException {
 
-    private HttpStatus status;
-    private String message;
+    private final HttpStatus status;
+    private final String message;
 
     public MoneyTransferAPIException(HttpStatus status, String message) {
         this.status = status;

@@ -22,11 +22,11 @@ import java.util.Collections;
 public class AuthServiceImpl implements AuthService {
 
     ResponseDto responseDto;
-    private AuthenticationManager authenticationManager;
-    private UserRepository userRepository;
-    private RoleRepository roleRepository;
-    private PasswordEncoder passwordEncoder;
-    private JwtTokenProvider jwtTokenProvider;
+    private final AuthenticationManager authenticationManager;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
 
 
     public AuthServiceImpl(AuthenticationManager authenticationManager,
@@ -45,7 +45,7 @@ public class AuthServiceImpl implements AuthService {
     public String login(LoginDto loginDto) {
 
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                loginDto.getUsername(), loginDto.getPassword()));
+                loginDto.getLoginName(), loginDto.getUserPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -87,7 +87,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public ResponseEntity<?> addRole(AddRoleRequest addRoleRequest) {
         Role role = new Role();
-        role.setName(addRoleRequest.getName());
+        role.setName(addRoleRequest.getRoleName());
         roleRepository.save(role);
         return null;
     }
@@ -131,7 +131,7 @@ public class AuthServiceImpl implements AuthService {
 
         } catch (Exception e) {
             responseDto.setStatus(HttpStatus.BAD_REQUEST);
-            responseDto.setDescription("User with that id not found");
+            responseDto.setDescription("User with that stateIdentity not found");
             return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
         }
     }

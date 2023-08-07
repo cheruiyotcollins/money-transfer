@@ -9,11 +9,10 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateCustomerRequest {
+public class GetCustomerResponse {
     private String name;
     private long id;
     private String phoneNo;
     private String customerEmail;
 
 }
-

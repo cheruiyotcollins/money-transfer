@@ -1,9 +1,9 @@
 package com.pezesha.moneytransfer.controller;
 
 import com.pezesha.moneytransfer.dto.CreateAccountRequest;
+import com.pezesha.moneytransfer.dto.CreateAccountTypeRequest;
 import com.pezesha.moneytransfer.dto.ResponseDto;
 import com.pezesha.moneytransfer.model.Account;
-import com.pezesha.moneytransfer.model.AccountType;
 import com.pezesha.moneytransfer.service.account.AccountService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -78,7 +78,7 @@ public class AccountController {
             @ApiResponse(responseCode = "404", description = "Account Type not found", content = @Content),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content)})
     @PostMapping("types/new")
-    public ResponseEntity<?> createAccountType(@Valid @RequestBody AccountType accountType) throws ExecutionException, InterruptedException {
+    public ResponseEntity<?> createAccountType(@Valid @RequestBody CreateAccountTypeRequest accountType) throws ExecutionException, InterruptedException {
         CompletableFuture completableFuture = accountService.createAccountType(accountType);
         responseDto = (ResponseDto) completableFuture.get();
 

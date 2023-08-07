@@ -6,9 +6,9 @@ import com.pezesha.moneytransfer.dto.ResponseDto;
 import java.util.concurrent.CompletableFuture;
 
 public interface TransactionService {
-    public CompletableFuture<ResponseDto> moneyTransfer(MoneyTransferRequest moneyTransferRequest);
+    CompletableFuture<ResponseDto> moneyTransfer(MoneyTransferRequest moneyTransferRequest);
 
-    public CompletableFuture<ResponseDto> findAll();
+    CompletableFuture<ResponseDto> findAll();
 
-    public CompletableFuture<ResponseDto> findById(long id);
+    CompletableFuture<ResponseDto> findById(long id);
 }

@@ -10,12 +10,14 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateAccountRequest {
-    private String customerName;
-    private long nationalId;
-    private long accountType;
-    private String MSISDN;
-    private String email;
-    private double startingBalance;
+    private String name;
+    private long stateIdentity;
+    private long acType;
+    private String phoneNo;
+    private String customerEmail;
+    private double initialBalance;
+
+
 
 
 }

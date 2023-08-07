@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -33,7 +34,7 @@ public class TransactionController {
             @ApiResponse(responseCode = "404", description = "Transaction not found", content = @Content),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content)})
     @PostMapping("new")
-    public ResponseEntity<?> processTransaction(@RequestBody MoneyTransferRequest moneyTransferRequest) throws ExecutionException, InterruptedException {
+    public ResponseEntity<?> processTransaction(@Valid @RequestBody MoneyTransferRequest moneyTransferRequest) throws ExecutionException, InterruptedException {
 
         CompletableFuture completableFuture = transactionService.moneyTransfer(moneyTransferRequest);
         responseDto = (ResponseDto) completableFuture.get();
