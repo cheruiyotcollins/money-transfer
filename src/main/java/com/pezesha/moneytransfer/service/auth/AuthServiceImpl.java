@@ -79,8 +79,9 @@ public class AuthServiceImpl implements AuthService {
             user.setRoles(Collections.singleton(userRole));
         }
         userRepository.save(user);
-
-        return new ResponseEntity("User registered successfully", HttpStatus.ACCEPTED);
+        responseDto.setStatus(HttpStatus.ACCEPTED);
+        responseDto.setDescription("User registered successfully");
+        return new ResponseEntity(responseDto, responseDto.getStatus());
     }
 
     @Override

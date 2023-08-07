@@ -55,10 +55,8 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        http.cors()
-                .and()
-                .csrf()
-                .disable()
+
+        http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests((authorize) ->
                         //Swagger access
                         authorize.requestMatchers("/swagger-ui/**").permitAll()
